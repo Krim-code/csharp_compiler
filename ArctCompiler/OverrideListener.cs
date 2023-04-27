@@ -19,7 +19,9 @@ public class ExpressionListener : arctBaseListener
     public LLVMBuilderRef builder;
 
     public ExpressionListener(LLVMBuilderRef b) { builder = b;}
-    
+
+   
+
     public override void ExitExpressionAdd(arctParser.ExpressionAddContext context)
     {   
         var right = ModuleClass.stack.Pop();
@@ -42,7 +44,7 @@ public class ExpressionListener : arctBaseListener
                 ModuleClass.stack.Push(result);
             }
         }
-        if (left.TypeOf().ToString() == "i32" || right.TypeOf().ToString() == "i32")
+        else
         {
             if (context.plusminus().GetText() == "+")
             {
@@ -65,8 +67,34 @@ public class ExpressionListener : arctBaseListener
         Console.WriteLine(left.TypeOf().ToString(),right.TypeOf().ToString());
         
     }
-  
+
+    public override void ExitExpressionMul(arctParser.ExpressionMulContext context)
+    {
+        var right = ModuleClass.stack.Pop();
+        var left = ModuleClass.stack.Pop();
         
+        right = LLVM.BuildSIToFP(builder, right, LLVMTypeRef.DoubleType(),"tmp_val_r");
+        left = LLVM.BuildSIToFP(builder, left, LLVMTypeRef.DoubleType(),"tmp_val_t");
+
+            if (context.multdivmod().GetText() == "*")
+            {
+                var result = LLVM.ConstFMul(left, right);
+                ModuleClass.stack.Push(result);
+            }
+            else if (context.multdivmod().GetText() == "/")
+            {
+                var result = LLVM.ConstFDiv(left, right);
+                ModuleClass.stack.Push(result);
+            }
+            else if (context.multdivmod().GetText() == "%")
+            {
+                var result = LLVM.ConstFRem(left, right);
+                ModuleClass.stack.Push(result);
+            }
+        
+        
+    }
+
 
     public override void EnterFactor([NotNull] arctParser.FactorContext context)
     {

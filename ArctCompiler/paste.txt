@@ -1,11 +1,13 @@
 ﻿int main(){
-       double k = 100.1 + 1.4;
+       double k = 100.1 + 1;
        double f = 100.7 - 9.8;
        int t = 3 + 6;
        int z = 5 - 7;
        int test = 4-2+1;
        double k = 9.7;
        int z = t;
-       
+       int a = 7 * 7;
+       double b = 49 / a
+       double c = 15 % 2
         return 0;
 }
