@@ -62,6 +62,7 @@ expression
     : factor    #expressionFactor
     | expression plusminus expression #expressionAdd
     | expression multdivmod expression #expressionMul
+    | '<'type'>' expression #expressionConvert
     ;
 
 

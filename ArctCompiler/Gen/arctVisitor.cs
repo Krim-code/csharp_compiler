@@ -153,6 +153,13 @@ public interface IarctVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitExpressionAdd([NotNull] arctParser.ExpressionAddContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>expressionConvert</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpressionConvert([NotNull] arctParser.ExpressionConvertContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>expressionFactor</c>
 	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>

@@ -233,6 +233,18 @@ public interface IarctListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitExpressionAdd([NotNull] arctParser.ExpressionAddContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>expressionConvert</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterExpressionConvert([NotNull] arctParser.ExpressionConvertContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>expressionConvert</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitExpressionConvert([NotNull] arctParser.ExpressionConvertContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>expressionFactor</c>
 	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>

@@ -60,13 +60,9 @@ public class ExpressionListener : arctBaseListener
             }
 
         }
-        
 
-        
-
-        Console.WriteLine(left.TypeOf().ToString(),right.TypeOf().ToString());
-        
     }
+
 
     public override void ExitExpressionMul(arctParser.ExpressionMulContext context)
     {
@@ -96,33 +92,44 @@ public class ExpressionListener : arctBaseListener
         
     }
 
+    public override void ExitExpressionConvert(arctParser.ExpressionConvertContext context)
+    {
+        var expr = ModuleClass.stack.Pop();
+        if (context.type().GetText() == "double")
+        {
+            expr = LLVM.ConstSIToFP(expr, LLVMTypeRef.DoubleType());
+        }
+        else
+        {
+            expr = LLVM.ConstFPToSI(expr, LLVMTypeRef.Int32Type());
+        }
+        ModuleClass.stack.Push(expr);
+        
+    }
+
 
     public override void EnterFactor([NotNull] arctParser.FactorContext context)
     {
 
         if (context.INTEGER() is { } i)
         {
-            Console.WriteLine($"{i.GetText()} It`s number");
             ModuleClass.stack.Push(LLVM.ConstInt(LLVM.Int32Type(), (ulong)int.Parse(i.GetText()), false));
 
         }
         if (context.DOUBLE() is { } d)
         {
-            Console.WriteLine($"{d.GetText()} It`s double");
             ModuleClass.stack.Push(LLVM.ConstReal(LLVM.DoubleType(), (ulong)Double.Parse(d.GetText())));
         }
 
 
         if (context.identifier() is { } id)
         {
-            Console.WriteLine($"{id.GetText()} It`s identifier");
             try
             {
                 var ptr = ModuleClass.main_variable
                     .Where(x => x.Key == id.GetText())
                     .ElementAt(0);
                 ModuleClass.stack.Push(ptr.Value);
-                Console.WriteLine(ptr.ToString());
             }
             catch (Exception e)
             {

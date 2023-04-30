@@ -278,6 +278,20 @@ public partial class arctBaseListener : IarctListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitExpressionAdd([NotNull] arctParser.ExpressionAddContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>expressionConvert</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExpressionConvert([NotNull] arctParser.ExpressionConvertContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>expressionConvert</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExpressionConvert([NotNull] arctParser.ExpressionConvertContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>expressionFactor</c>
 	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
