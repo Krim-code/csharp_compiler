@@ -26,44 +26,26 @@ public class ExpressionListener : arctBaseListener
     {   
         var right = ModuleClass.stack.Pop();
         var left = ModuleClass.stack.Pop();
-        
+        LLVMValueRef result;
         if (left.TypeOf().ToString() == "double" || right.TypeOf().ToString() == "double" )
         {
             right = LLVM.BuildSIToFP(builder, right, LLVMTypeRef.DoubleType(),"tmp_val_r");
             left = LLVM.BuildSIToFP(builder, left, LLVMTypeRef.DoubleType(),"tmp_val_t");
-            if (context.plusminus().GetText() == "+")
-            {
-               
-                var result = LLVM.ConstFAdd(left, right);
-                ModuleClass.stack.Push(result);
-            }
-
-            if (context.plusminus().GetText() == "-")
-            {
-                var result = LLVM.ConstFSub(left, right);
-                ModuleClass.stack.Push(result);
-            }
+            result = context.plusminus().GetText() == "+" ?
+                LLVM.ConstFAdd(left, right) : 
+                LLVM.ConstFSub(left, right);
+            ModuleClass.stack.Push(result);
         }
         else
         {
-            if (context.plusminus().GetText() == "+")
-            {
-               
-                var result = LLVM.ConstAdd( left, right);
-                ModuleClass.stack.Push(result);
-            }
-
-            if (context.plusminus().GetText() == "-")
-            {
-                var result = LLVM.ConstSub(left, right);
-                ModuleClass.stack.Push(result);
-            }
-
+            result = context.plusminus().GetText() == "+" ? 
+                LLVM.ConstAdd( left, right) : 
+                LLVM.ConstSub(left, right);
+            ModuleClass.stack.Push(result);
         }
 
     }
-
-
+    
     public override void ExitExpressionMul(arctParser.ExpressionMulContext context)
     {
         var right = ModuleClass.stack.Pop();
@@ -94,17 +76,9 @@ public class ExpressionListener : arctBaseListener
 
     public override void ExitExpressionConvert(arctParser.ExpressionConvertContext context)
     {
-        var expr = ModuleClass.stack.Pop();
-        if (context.type().GetText() == "double")
-        {
-            expr = LLVM.ConstSIToFP(expr, LLVMTypeRef.DoubleType());
-        }
-        else
-        {
-            expr = LLVM.ConstFPToSI(expr, LLVMTypeRef.Int32Type());
-        }
+        LLVMValueRef expr = ModuleClass.stack.Pop();
+        expr = context.type().GetText() == "double" ? LLVM.ConstSIToFP(expr, LLVMTypeRef.DoubleType()) : LLVM.ConstFPToSI(expr, LLVMTypeRef.Int32Type());
         ModuleClass.stack.Push(expr);
-        
     }
 
 
