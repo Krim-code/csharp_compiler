@@ -38,47 +38,35 @@ public interface IarctVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitProgram([NotNull] arctParser.ProgramContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.main"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitMain([NotNull] arctParser.MainContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.block"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitBlock([NotNull] arctParser.BlockContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.constant"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitConstant([NotNull] arctParser.ConstantContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.variable"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitVariable([NotNull] arctParser.VariableContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="arctParser.function"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitFunction([NotNull] arctParser.FunctionContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.type"/>.
+	/// Visit a parse tree produced by <see cref="arctParser.functionHead"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitType([NotNull] arctParser.TypeContext context);
+	Result VisitFunctionHead([NotNull] arctParser.FunctionHeadContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.parameter"/>.
+	/// Visit a parse tree produced by <see cref="arctParser.arg"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitParameter([NotNull] arctParser.ParameterContext context);
+	Result VisitArg([NotNull] arctParser.ArgContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="arctParser.arguments"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitArguments([NotNull] arctParser.ArgumentsContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="arctParser.functionBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionBody([NotNull] arctParser.FunctionBodyContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="arctParser.statement"/>.
 	/// </summary>
@@ -86,41 +74,11 @@ public interface IarctVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStatement([NotNull] arctParser.StatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.callFunction"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitCallFunction([NotNull] arctParser.CallFunctionContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="arctParser.assignmentStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitAssignmentStatement([NotNull] arctParser.AssignmentStatementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.coutStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitCoutStatement([NotNull] arctParser.CoutStatementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.expressionUnion"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitExpressionUnion([NotNull] arctParser.ExpressionUnionContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.ifStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitIfStatement([NotNull] arctParser.IfStatementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.whileStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitWhileStatement([NotNull] arctParser.WhileStatementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="arctParser.returnStatement"/>.
 	/// </summary>
@@ -128,23 +86,35 @@ public interface IarctVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitReturnStatement([NotNull] arctParser.ReturnStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.continueStatement"/>.
+	/// Visit a parse tree produced by <see cref="arctParser.whileStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitContinueStatement([NotNull] arctParser.ContinueStatementContext context);
+	Result VisitWhileStatement([NotNull] arctParser.WhileStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.condition"/>.
+	/// Visit a parse tree produced by <see cref="arctParser.convert_type"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitCondition([NotNull] arctParser.ConditionContext context);
+	Result VisitConvert_type([NotNull] arctParser.Convert_typeContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.conditionUnion"/>.
+	/// Visit a parse tree produced by <see cref="arctParser.moveValueVariable"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitConditionUnion([NotNull] arctParser.ConditionUnionContext context);
+	Result VisitMoveValueVariable([NotNull] arctParser.MoveValueVariableContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="arctParser.printStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPrintStatement([NotNull] arctParser.PrintStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="arctParser.ifStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIfStatement([NotNull] arctParser.IfStatementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>expressionAdd</c>
 	/// labeled alternative in <see cref="arctParser.expression"/>.
@@ -153,20 +123,6 @@ public interface IarctVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitExpressionAdd([NotNull] arctParser.ExpressionAddContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>expressionConvert</c>
-	/// labeled alternative in <see cref="arctParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitExpressionConvert([NotNull] arctParser.ExpressionConvertContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>expressionFactor</c>
-	/// labeled alternative in <see cref="arctParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitExpressionFactor([NotNull] arctParser.ExpressionFactorContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>expressionMul</c>
 	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
@@ -174,33 +130,87 @@ public interface IarctVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitExpressionMul([NotNull] arctParser.ExpressionMulContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.factor"/>.
+	/// Visit a parse tree produced by the <c>expressionNumber</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitFactor([NotNull] arctParser.FactorContext context);
+	Result VisitExpressionNumber([NotNull] arctParser.ExpressionNumberContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.identifier"/>.
+	/// Visit a parse tree produced by the <c>expressionFunctionCall</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitIdentifier([NotNull] arctParser.IdentifierContext context);
+	Result VisitExpressionFunctionCall([NotNull] arctParser.ExpressionFunctionCallContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.operations"/>.
+	/// Visit a parse tree produced by the <c>expressionNested</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitOperations([NotNull] arctParser.OperationsContext context);
+	Result VisitExpressionNested([NotNull] arctParser.ExpressionNestedContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.plusminus"/>.
+	/// Visit a parse tree produced by the <c>expressionToType</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitPlusminus([NotNull] arctParser.PlusminusContext context);
+	Result VisitExpressionToType([NotNull] arctParser.ExpressionToTypeContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="arctParser.multdivmod"/>.
+	/// Visit a parse tree produced by the <c>expressionPow</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitMultdivmod([NotNull] arctParser.MultdivmodContext context);
+	Result VisitExpressionPow([NotNull] arctParser.ExpressionPowContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>expressionString</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpressionString([NotNull] arctParser.ExpressionStringContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="arctParser.equation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEquation([NotNull] arctParser.EquationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="arctParser.relop"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRelop([NotNull] arctParser.RelopContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="arctParser.param"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParam([NotNull] arctParser.ParamContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="arctParser.params"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParams([NotNull] arctParser.ParamsContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="arctParser.functionCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionCall([NotNull] arctParser.FunctionCallContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="arctParser.atom"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAtom([NotNull] arctParser.AtomContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="arctParser.type"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitType([NotNull] arctParser.TypeContext context);
 }

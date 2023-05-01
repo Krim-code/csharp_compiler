@@ -21,10 +21,10 @@ namespace ArctCompiler
                 parser.BuildParseTree = true;
                 IParseTree tree = parser.program();
 
-                IarctListener printer = new OverrideListener();
+                OverrideListener printer = new OverrideListener();
                 ParseTreeWalker.Default.Walk(printer, tree);
-                LLVMModuleRef mod = ModuleClass.Module;
-                LLVMValueRef main = ModuleClass.main;
+                LLVMModuleRef mod = printer.Module;
+           
                 LLVMBool Success = new LLVMBool(0);
                 
                 if (LLVM.VerifyModule(mod, LLVMVerifierFailureAction.LLVMPrintMessageAction, out var error) != Success)
@@ -38,7 +38,7 @@ namespace ArctCompiler
                 LLVM.InitializeX86AsmParser();
                 LLVM.InitializeX86AsmPrinter();
 
-                var aa = LLVM.GetLinkage(main);
+              
                 LLVM.DumpModule(mod);
                 if (LLVM.GetTargetFromTriple("x86_64-pc-win32", out var target, out error) == Success)
                 {

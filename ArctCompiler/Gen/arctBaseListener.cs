@@ -48,54 +48,6 @@ public partial class arctBaseListener : IarctListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitProgram([NotNull] arctParser.ProgramContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.main"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterMain([NotNull] arctParser.MainContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.main"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitMain([NotNull] arctParser.MainContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.block"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBlock([NotNull] arctParser.BlockContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.block"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBlock([NotNull] arctParser.BlockContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.constant"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterConstant([NotNull] arctParser.ConstantContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.constant"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitConstant([NotNull] arctParser.ConstantContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.variable"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterVariable([NotNull] arctParser.VariableContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.variable"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitVariable([NotNull] arctParser.VariableContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="arctParser.function"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -108,29 +60,53 @@ public partial class arctBaseListener : IarctListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFunction([NotNull] arctParser.FunctionContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.type"/>.
+	/// Enter a parse tree produced by <see cref="arctParser.functionHead"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterType([NotNull] arctParser.TypeContext context) { }
+	public virtual void EnterFunctionHead([NotNull] arctParser.FunctionHeadContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.type"/>.
+	/// Exit a parse tree produced by <see cref="arctParser.functionHead"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitType([NotNull] arctParser.TypeContext context) { }
+	public virtual void ExitFunctionHead([NotNull] arctParser.FunctionHeadContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.parameter"/>.
+	/// Enter a parse tree produced by <see cref="arctParser.arg"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterParameter([NotNull] arctParser.ParameterContext context) { }
+	public virtual void EnterArg([NotNull] arctParser.ArgContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.parameter"/>.
+	/// Exit a parse tree produced by <see cref="arctParser.arg"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitParameter([NotNull] arctParser.ParameterContext context) { }
+	public virtual void ExitArg([NotNull] arctParser.ArgContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.arguments"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterArguments([NotNull] arctParser.ArgumentsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.arguments"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitArguments([NotNull] arctParser.ArgumentsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.functionBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFunctionBody([NotNull] arctParser.FunctionBodyContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.functionBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFunctionBody([NotNull] arctParser.FunctionBodyContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="arctParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -144,18 +120,6 @@ public partial class arctBaseListener : IarctListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStatement([NotNull] arctParser.StatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.callFunction"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterCallFunction([NotNull] arctParser.CallFunctionContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.callFunction"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitCallFunction([NotNull] arctParser.CallFunctionContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="arctParser.assignmentStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -167,54 +131,6 @@ public partial class arctBaseListener : IarctListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitAssignmentStatement([NotNull] arctParser.AssignmentStatementContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.coutStatement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterCoutStatement([NotNull] arctParser.CoutStatementContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.coutStatement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitCoutStatement([NotNull] arctParser.CoutStatementContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.expressionUnion"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterExpressionUnion([NotNull] arctParser.ExpressionUnionContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.expressionUnion"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitExpressionUnion([NotNull] arctParser.ExpressionUnionContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.ifStatement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterIfStatement([NotNull] arctParser.IfStatementContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.ifStatement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitIfStatement([NotNull] arctParser.IfStatementContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.whileStatement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterWhileStatement([NotNull] arctParser.WhileStatementContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.whileStatement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitWhileStatement([NotNull] arctParser.WhileStatementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="arctParser.returnStatement"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -228,41 +144,65 @@ public partial class arctBaseListener : IarctListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitReturnStatement([NotNull] arctParser.ReturnStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.continueStatement"/>.
+	/// Enter a parse tree produced by <see cref="arctParser.whileStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterContinueStatement([NotNull] arctParser.ContinueStatementContext context) { }
+	public virtual void EnterWhileStatement([NotNull] arctParser.WhileStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.continueStatement"/>.
+	/// Exit a parse tree produced by <see cref="arctParser.whileStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitContinueStatement([NotNull] arctParser.ContinueStatementContext context) { }
+	public virtual void ExitWhileStatement([NotNull] arctParser.WhileStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.condition"/>.
+	/// Enter a parse tree produced by <see cref="arctParser.convert_type"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterCondition([NotNull] arctParser.ConditionContext context) { }
+	public virtual void EnterConvert_type([NotNull] arctParser.Convert_typeContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.condition"/>.
+	/// Exit a parse tree produced by <see cref="arctParser.convert_type"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitCondition([NotNull] arctParser.ConditionContext context) { }
+	public virtual void ExitConvert_type([NotNull] arctParser.Convert_typeContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.conditionUnion"/>.
+	/// Enter a parse tree produced by <see cref="arctParser.moveValueVariable"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterConditionUnion([NotNull] arctParser.ConditionUnionContext context) { }
+	public virtual void EnterMoveValueVariable([NotNull] arctParser.MoveValueVariableContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.conditionUnion"/>.
+	/// Exit a parse tree produced by <see cref="arctParser.moveValueVariable"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitConditionUnion([NotNull] arctParser.ConditionUnionContext context) { }
+	public virtual void ExitMoveValueVariable([NotNull] arctParser.MoveValueVariableContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.printStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPrintStatement([NotNull] arctParser.PrintStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.printStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPrintStatement([NotNull] arctParser.PrintStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.ifStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIfStatement([NotNull] arctParser.IfStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.ifStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIfStatement([NotNull] arctParser.IfStatementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>expressionAdd</c>
 	/// labeled alternative in <see cref="arctParser.expression"/>.
@@ -278,34 +218,6 @@ public partial class arctBaseListener : IarctListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitExpressionAdd([NotNull] arctParser.ExpressionAddContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>expressionConvert</c>
-	/// labeled alternative in <see cref="arctParser.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterExpressionConvert([NotNull] arctParser.ExpressionConvertContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>expressionConvert</c>
-	/// labeled alternative in <see cref="arctParser.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitExpressionConvert([NotNull] arctParser.ExpressionConvertContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>expressionFactor</c>
-	/// labeled alternative in <see cref="arctParser.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterExpressionFactor([NotNull] arctParser.ExpressionFactorContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>expressionFactor</c>
-	/// labeled alternative in <see cref="arctParser.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitExpressionFactor([NotNull] arctParser.ExpressionFactorContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by the <c>expressionMul</c>
 	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -320,65 +232,173 @@ public partial class arctBaseListener : IarctListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitExpressionMul([NotNull] arctParser.ExpressionMulContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.factor"/>.
+	/// Enter a parse tree produced by the <c>expressionNumber</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFactor([NotNull] arctParser.FactorContext context) { }
+	public virtual void EnterExpressionNumber([NotNull] arctParser.ExpressionNumberContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.factor"/>.
+	/// Exit a parse tree produced by the <c>expressionNumber</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFactor([NotNull] arctParser.FactorContext context) { }
+	public virtual void ExitExpressionNumber([NotNull] arctParser.ExpressionNumberContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.identifier"/>.
+	/// Enter a parse tree produced by the <c>expressionFunctionCall</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterIdentifier([NotNull] arctParser.IdentifierContext context) { }
+	public virtual void EnterExpressionFunctionCall([NotNull] arctParser.ExpressionFunctionCallContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.identifier"/>.
+	/// Exit a parse tree produced by the <c>expressionFunctionCall</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitIdentifier([NotNull] arctParser.IdentifierContext context) { }
+	public virtual void ExitExpressionFunctionCall([NotNull] arctParser.ExpressionFunctionCallContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.operations"/>.
+	/// Enter a parse tree produced by the <c>expressionNested</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterOperations([NotNull] arctParser.OperationsContext context) { }
+	public virtual void EnterExpressionNested([NotNull] arctParser.ExpressionNestedContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.operations"/>.
+	/// Exit a parse tree produced by the <c>expressionNested</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitOperations([NotNull] arctParser.OperationsContext context) { }
+	public virtual void ExitExpressionNested([NotNull] arctParser.ExpressionNestedContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.plusminus"/>.
+	/// Enter a parse tree produced by the <c>expressionToType</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterPlusminus([NotNull] arctParser.PlusminusContext context) { }
+	public virtual void EnterExpressionToType([NotNull] arctParser.ExpressionToTypeContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.plusminus"/>.
+	/// Exit a parse tree produced by the <c>expressionToType</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitPlusminus([NotNull] arctParser.PlusminusContext context) { }
+	public virtual void ExitExpressionToType([NotNull] arctParser.ExpressionToTypeContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.multdivmod"/>.
+	/// Enter a parse tree produced by the <c>expressionPow</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterMultdivmod([NotNull] arctParser.MultdivmodContext context) { }
+	public virtual void EnterExpressionPow([NotNull] arctParser.ExpressionPowContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.multdivmod"/>.
+	/// Exit a parse tree produced by the <c>expressionPow</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitMultdivmod([NotNull] arctParser.MultdivmodContext context) { }
+	public virtual void ExitExpressionPow([NotNull] arctParser.ExpressionPowContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>expressionString</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExpressionString([NotNull] arctParser.ExpressionStringContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>expressionString</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExpressionString([NotNull] arctParser.ExpressionStringContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.equation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterEquation([NotNull] arctParser.EquationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.equation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitEquation([NotNull] arctParser.EquationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.relop"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRelop([NotNull] arctParser.RelopContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.relop"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRelop([NotNull] arctParser.RelopContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.param"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterParam([NotNull] arctParser.ParamContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.param"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitParam([NotNull] arctParser.ParamContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.params"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterParams([NotNull] arctParser.ParamsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.params"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitParams([NotNull] arctParser.ParamsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.functionCall"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFunctionCall([NotNull] arctParser.FunctionCallContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.functionCall"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFunctionCall([NotNull] arctParser.FunctionCallContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.atom"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAtom([NotNull] arctParser.AtomContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.atom"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAtom([NotNull] arctParser.AtomContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.type"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterType([NotNull] arctParser.TypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.type"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitType([NotNull] arctParser.TypeContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

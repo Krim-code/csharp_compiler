@@ -41,46 +41,6 @@ public interface IarctListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitProgram([NotNull] arctParser.ProgramContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.main"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterMain([NotNull] arctParser.MainContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.main"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitMain([NotNull] arctParser.MainContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.block"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterBlock([NotNull] arctParser.BlockContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.block"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitBlock([NotNull] arctParser.BlockContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.constant"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterConstant([NotNull] arctParser.ConstantContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.constant"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitConstant([NotNull] arctParser.ConstantContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.variable"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterVariable([NotNull] arctParser.VariableContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.variable"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitVariable([NotNull] arctParser.VariableContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="arctParser.function"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -91,25 +51,45 @@ public interface IarctListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFunction([NotNull] arctParser.FunctionContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.type"/>.
+	/// Enter a parse tree produced by <see cref="arctParser.functionHead"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterType([NotNull] arctParser.TypeContext context);
+	void EnterFunctionHead([NotNull] arctParser.FunctionHeadContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.type"/>.
+	/// Exit a parse tree produced by <see cref="arctParser.functionHead"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitType([NotNull] arctParser.TypeContext context);
+	void ExitFunctionHead([NotNull] arctParser.FunctionHeadContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.parameter"/>.
+	/// Enter a parse tree produced by <see cref="arctParser.arg"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterParameter([NotNull] arctParser.ParameterContext context);
+	void EnterArg([NotNull] arctParser.ArgContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.parameter"/>.
+	/// Exit a parse tree produced by <see cref="arctParser.arg"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitParameter([NotNull] arctParser.ParameterContext context);
+	void ExitArg([NotNull] arctParser.ArgContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.arguments"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterArguments([NotNull] arctParser.ArgumentsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.arguments"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitArguments([NotNull] arctParser.ArgumentsContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.functionBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionBody([NotNull] arctParser.FunctionBodyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.functionBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionBody([NotNull] arctParser.FunctionBodyContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="arctParser.statement"/>.
 	/// </summary>
@@ -121,16 +101,6 @@ public interface IarctListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStatement([NotNull] arctParser.StatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.callFunction"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterCallFunction([NotNull] arctParser.CallFunctionContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.callFunction"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitCallFunction([NotNull] arctParser.CallFunctionContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="arctParser.assignmentStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -140,46 +110,6 @@ public interface IarctListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitAssignmentStatement([NotNull] arctParser.AssignmentStatementContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.coutStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterCoutStatement([NotNull] arctParser.CoutStatementContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.coutStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitCoutStatement([NotNull] arctParser.CoutStatementContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.expressionUnion"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterExpressionUnion([NotNull] arctParser.ExpressionUnionContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.expressionUnion"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitExpressionUnion([NotNull] arctParser.ExpressionUnionContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.ifStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterIfStatement([NotNull] arctParser.IfStatementContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.ifStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitIfStatement([NotNull] arctParser.IfStatementContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.whileStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterWhileStatement([NotNull] arctParser.WhileStatementContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.whileStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitWhileStatement([NotNull] arctParser.WhileStatementContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="arctParser.returnStatement"/>.
 	/// </summary>
@@ -191,35 +121,55 @@ public interface IarctListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitReturnStatement([NotNull] arctParser.ReturnStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.continueStatement"/>.
+	/// Enter a parse tree produced by <see cref="arctParser.whileStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterContinueStatement([NotNull] arctParser.ContinueStatementContext context);
+	void EnterWhileStatement([NotNull] arctParser.WhileStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.continueStatement"/>.
+	/// Exit a parse tree produced by <see cref="arctParser.whileStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitContinueStatement([NotNull] arctParser.ContinueStatementContext context);
+	void ExitWhileStatement([NotNull] arctParser.WhileStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.condition"/>.
+	/// Enter a parse tree produced by <see cref="arctParser.convert_type"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterCondition([NotNull] arctParser.ConditionContext context);
+	void EnterConvert_type([NotNull] arctParser.Convert_typeContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.condition"/>.
+	/// Exit a parse tree produced by <see cref="arctParser.convert_type"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitCondition([NotNull] arctParser.ConditionContext context);
+	void ExitConvert_type([NotNull] arctParser.Convert_typeContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.conditionUnion"/>.
+	/// Enter a parse tree produced by <see cref="arctParser.moveValueVariable"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterConditionUnion([NotNull] arctParser.ConditionUnionContext context);
+	void EnterMoveValueVariable([NotNull] arctParser.MoveValueVariableContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.conditionUnion"/>.
+	/// Exit a parse tree produced by <see cref="arctParser.moveValueVariable"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitConditionUnion([NotNull] arctParser.ConditionUnionContext context);
+	void ExitMoveValueVariable([NotNull] arctParser.MoveValueVariableContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.printStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPrintStatement([NotNull] arctParser.PrintStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.printStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPrintStatement([NotNull] arctParser.PrintStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.ifStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIfStatement([NotNull] arctParser.IfStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.ifStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIfStatement([NotNull] arctParser.IfStatementContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>expressionAdd</c>
 	/// labeled alternative in <see cref="arctParser.expression"/>.
@@ -233,30 +183,6 @@ public interface IarctListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitExpressionAdd([NotNull] arctParser.ExpressionAddContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>expressionConvert</c>
-	/// labeled alternative in <see cref="arctParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterExpressionConvert([NotNull] arctParser.ExpressionConvertContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>expressionConvert</c>
-	/// labeled alternative in <see cref="arctParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitExpressionConvert([NotNull] arctParser.ExpressionConvertContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>expressionFactor</c>
-	/// labeled alternative in <see cref="arctParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterExpressionFactor([NotNull] arctParser.ExpressionFactorContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>expressionFactor</c>
-	/// labeled alternative in <see cref="arctParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitExpressionFactor([NotNull] arctParser.ExpressionFactorContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>expressionMul</c>
 	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
@@ -269,53 +195,145 @@ public interface IarctListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitExpressionMul([NotNull] arctParser.ExpressionMulContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.factor"/>.
+	/// Enter a parse tree produced by the <c>expressionNumber</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterFactor([NotNull] arctParser.FactorContext context);
+	void EnterExpressionNumber([NotNull] arctParser.ExpressionNumberContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.factor"/>.
+	/// Exit a parse tree produced by the <c>expressionNumber</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitFactor([NotNull] arctParser.FactorContext context);
+	void ExitExpressionNumber([NotNull] arctParser.ExpressionNumberContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.identifier"/>.
+	/// Enter a parse tree produced by the <c>expressionFunctionCall</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterIdentifier([NotNull] arctParser.IdentifierContext context);
+	void EnterExpressionFunctionCall([NotNull] arctParser.ExpressionFunctionCallContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.identifier"/>.
+	/// Exit a parse tree produced by the <c>expressionFunctionCall</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitIdentifier([NotNull] arctParser.IdentifierContext context);
+	void ExitExpressionFunctionCall([NotNull] arctParser.ExpressionFunctionCallContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.operations"/>.
+	/// Enter a parse tree produced by the <c>expressionNested</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterOperations([NotNull] arctParser.OperationsContext context);
+	void EnterExpressionNested([NotNull] arctParser.ExpressionNestedContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.operations"/>.
+	/// Exit a parse tree produced by the <c>expressionNested</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitOperations([NotNull] arctParser.OperationsContext context);
+	void ExitExpressionNested([NotNull] arctParser.ExpressionNestedContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.plusminus"/>.
+	/// Enter a parse tree produced by the <c>expressionToType</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterPlusminus([NotNull] arctParser.PlusminusContext context);
+	void EnterExpressionToType([NotNull] arctParser.ExpressionToTypeContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.plusminus"/>.
+	/// Exit a parse tree produced by the <c>expressionToType</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitPlusminus([NotNull] arctParser.PlusminusContext context);
+	void ExitExpressionToType([NotNull] arctParser.ExpressionToTypeContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="arctParser.multdivmod"/>.
+	/// Enter a parse tree produced by the <c>expressionPow</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterMultdivmod([NotNull] arctParser.MultdivmodContext context);
+	void EnterExpressionPow([NotNull] arctParser.ExpressionPowContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="arctParser.multdivmod"/>.
+	/// Exit a parse tree produced by the <c>expressionPow</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitMultdivmod([NotNull] arctParser.MultdivmodContext context);
+	void ExitExpressionPow([NotNull] arctParser.ExpressionPowContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>expressionString</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterExpressionString([NotNull] arctParser.ExpressionStringContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>expressionString</c>
+	/// labeled alternative in <see cref="arctParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitExpressionString([NotNull] arctParser.ExpressionStringContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.equation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEquation([NotNull] arctParser.EquationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.equation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEquation([NotNull] arctParser.EquationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.relop"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRelop([NotNull] arctParser.RelopContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.relop"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRelop([NotNull] arctParser.RelopContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.param"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterParam([NotNull] arctParser.ParamContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.param"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitParam([NotNull] arctParser.ParamContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.params"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterParams([NotNull] arctParser.ParamsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.params"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitParams([NotNull] arctParser.ParamsContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.functionCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionCall([NotNull] arctParser.FunctionCallContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.functionCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionCall([NotNull] arctParser.FunctionCallContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.atom"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAtom([NotNull] arctParser.AtomContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.atom"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAtom([NotNull] arctParser.AtomContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="arctParser.type"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterType([NotNull] arctParser.TypeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="arctParser.type"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitType([NotNull] arctParser.TypeContext context);
 }

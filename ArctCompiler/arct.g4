@@ -1,136 +1,120 @@
 grammar arct;
-program:
-        constant?
-        function? 
-        main;
-     
-main: type 'main()' block;
 
-block: LBRACE (statement)* RBRACE;
+program: function*;
 
-constant: CONST variable (ENDPOINT CONST variable)* ENDPOINT;
+function: functionHead LBRACE functionBody RBRACE;
 
-variable: type identifier( EQ expression )?;
-                            
-function: FUNC type identifier LRBRACKET parameter RRBRACKET block;
-                                           
+functionHead: type ID LPAREN arguments RPAREN;
+
+arg: type ID;
+arguments: arg? (',' arg)*;
+
+functionBody: (statement)*;
+
+statement
+    : assignmentStatement
+    | returnStatement
+    | ifStatement
+    | whileStatement
+    | printStatement
+    | moveValueVariable
+    ;
+
+
+assignmentStatement: type ID EQ expression END_STATE;
+
+returnStatement: 'return' expression END_STATE;
+
+whileStatement:  WHILE LPAREN equation RPAREN LBRACE (statement|expression)* RBRACE;
+
+
+convert_type: '<<' type '>>' LPAREN expression RPAREN;
+
+moveValueVariable:ID EQ expression END_STATE;
+
+printStatement :'print' LPAREN expression RPAREN END_STATE;
+
+ifStatement: 'if' LPAREN equation RPAREN LBRACE (statement)* RBRACE;
+
+expression
+
+   :  convert_type                            #expressionToType
+   |  functionCall                            #expressionFunctionCall
+   |  expression op=POW expression            #expressionPow
+   |  expression op=(TIMES | DIV| REM)  expression #expressionMul
+   |  expression op=(PLUS | MINUS) expression #expressionAdd
+   |  LPAREN expression RPAREN                #expressionNested
+   |  (PLUS | MINUS)* atom                    #expressionNumber
+   |  STRING                                  #expressionString
+   ;
+
+
+equation
+   : expression op=relop expression
+   ;
+
+relop
+   : EQ_EQ
+   | GT
+   | LT
+   | NOT_EQ
+   ;
+
+param: expression;
+params: param? (',' param)*;
+
+functionCall: ID LPAREN params RPAREN;
+
+
+atom
+    : op=INT
+    | op=DECIMAL
+    | op=ID
+    ;
+
 type
     : 'int'
     | 'double'
     ;
 
-parameter: (variable(COMMA variable)*)?;
+WHILE: 'while';
+STRING : '"' (ESC | ~["\\])* '"';
+fragment ESC: '\\' .;
 
-statement
-    : assignmentStatement
-    | coutStatement     ENDPOINT
-    | ifStatement
-    | whileStatement
-    | continueStatement ENDPOINT
-    | expression        ENDPOINT
-    | callFunction      ENDPOINT
-    | constant
-    | variable          ENDPOINT
-    | returnStatement   ENDPOINT
-    ;
-    
-callFunction: identifier LRBRACKET expressionUnion RRBRACKET;
-
-assignmentStatement: identifier EQ expression;
-
-coutStatement: COUT LRBRACKET (expressionUnion | '"'STRING'"') RRBRACKET;
-
-expressionUnion: (expression(COMMA expression)*)?;
-
-ifStatement: IF LRBRACKET conditionUnion RRBRACKET block (ELSE block)?;
-
-whileStatement: WHILE LRBRACKET conditionUnion RRBRACKET block;
-
-returnStatement: RETURN factor;
-
-continueStatement: CONTIN;
-
-condition
-    : expression 
-    | callFunction
-    | expression operations expression
-    ;
-
-conditionUnion: condition (op = ('and'|'or') condition)*;
-
-expression 
-    : factor    #expressionFactor
-    | expression plusminus expression #expressionAdd
-    | expression multdivmod expression #expressionMul
-    | '<'type'>' expression #expressionConvert
-    ;
-
-
-factor
-    : identifier  
-    | INTEGER
-    | DOUBLE
-    | LRBRACKET factor RRBRACKET
-    | assignmentStatement
-    | callFunction
-    ;
-
-identifier: STRING(STRING|NUMBER)*;
-                                               
-operations
-    : EQQ
-    | NEG
-    | BIGGER
-    | EQBIGGER
-    | LESS
-    | EQLESS
-    ;                  
-plusminus
-    : PLUS
-    | MINUS
-    ; 
-multdivmod
-    : MULT
-    | DIV
-    | MOD
-    ;
-
-IF:           'if';
-WHILE:        'while';
-RETURN:       'return';
-FUNC:         'func';
-COUT:         'cout';
-DOUBLE:       NUMBER'.'NUMBER*; 
-INTEGER:      NUMBER;
-STRING:       [a-zA-Z][a-zA-Z]*;
-NUMBER:       [0-9][0-9]*;
-CONTIN:       'continue';
-BREAK:        'break';
-CONST:        'const';
-ELSE:         'else';
-AND:          'and';
-OR:           'or';
-COMMA:        ',';
-EQ:           '=';
-ENDPOINT:     ';';
-LBRACE:       '{';   
-RBRACE:       '}';
-LRBRACKET:    '(';   
-RRBRACKET:    ')';
-COMMENT:      '//' ~[\r\n]* -> skip;
-WS:           [ \t\r\n]     -> skip;
-BLOCKCOMMENT: '/*'.*?'*/'   -> skip;
-
-// LOGIC OPERATIONS
-EQQ:      '==';
-NEG:      '!=';
-BIGGER:   '>';
-EQBIGGER: '>=';
-LESS:     '<';
-EQLESS:   '<=';
-// MATH OPERATIONS
-PLUS:  '+';
+ID: [a-zA-Z]+ DIGIT*;
+TIMES: '*';
+REM: '%';
+DIV: '/';
+PLUS: '+';
 MINUS: '-';
-MULT:  '*';
-DIV:   '/';
-MOD:   '%';
+LPAREN: '(';
+RPAREN: ')';
+POW: '^';
+EQ: '=';
+EQ_EQ: '==';
+NOT_EQ: '!=';
+LBRACE: '{';
+RBRACE: '}';
+END_STATE:';';
+GT: '>';
+LT: '<';
+
+INT: DIGIT+;
+DECIMAL: INT '.' INT;
+
+fragment DIGIT: [0-9];
+fragment SIGN: (MINUS)?;
+
+
+WS
+   : [ \r\n\t] + -> skip
+   ;
+
+
+COMMENT
+    :   '/*' .*? '*/' -> skip
+    ;
+
+LINE_COMMENT
+    :   '//' ~[\r\n]* -> skip
+    ;
