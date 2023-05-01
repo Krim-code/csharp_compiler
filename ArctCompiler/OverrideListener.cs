@@ -2,6 +2,7 @@
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using LLVMSharp;
+using Module = System.Reflection.Module;
 
 namespace ArctCompiler;
 
@@ -13,16 +14,9 @@ public class MainAST
     {
         functionList.Add(name, pointer);
     }
-    private static FunctionAST? get_function(string name)
+    public FunctionAST get_function(string name)
     {
-        if (functionList.TryGetValue(name, out FunctionAST value))
-        {
-            return value;
-        }
-        else
-        {
-            return null;
-        }
+        return functionList[name];
     }
 }
 
@@ -65,7 +59,7 @@ public class OverrideListener : arctBaseListener
         AST = new MainAST();
       
     }
-
+    
     public override void EnterFunction(arctParser.FunctionContext context)
     {
         FunctionListener listener = new FunctionListener(this.Module,this.AST);
@@ -76,7 +70,6 @@ public class OverrideListener : arctBaseListener
 public class FunctionListener : arctBaseListener
 {
     public LLVMModuleRef Module { get; set; }
-    LLVMValueRef main;
     public MainAST MainAst { get; set; }
     public LLVMValueRef? Functions;
     public FunctionAST? Ast;
@@ -88,28 +81,55 @@ public class FunctionListener : arctBaseListener
         Ast = null;
         Functions = null;
     }
-
-    public override void EnterFunctionBody(arctParser.FunctionBodyContext context)
+    public override void EnterFunctionHead(arctParser.FunctionHeadContext context)
     {
-        LLVMTypeRef[] paramTypes = {LLVM.Int32Type(),LLVM.Int32Type()};
-        LLVMTypeRef ret_type = LLVM.FunctionType(LLVM.Int32Type(), paramTypes, false);
-        main = LLVM.AddFunction(Module, "main", ret_type);
-        LLVMBasicBlockRef entry = LLVM.AppendBasicBlock(main, "entry");
+        var return_type = context.type().GetText() == "int" ? LLVMTypeRef.Int32Type() : LLVMTypeRef.DoubleType();
+        List<LLVMTypeRef> args_type = new List<LLVMTypeRef>();
+        foreach (var arg in context.arguments().arg())
+        {
+            args_type.Add( arg.type().GetText() == "int" ? 
+                LLVMTypeRef.Int32Type() :
+                LLVMTypeRef.DoubleType());
+        }
+        
+        LLVMTypeRef[] paramTypes = args_type.ToArray();
+        string func_name = context.ID().Symbol.Text;
+        LLVMTypeRef ret_type = LLVM.FunctionType(return_type, paramTypes, false);
+        Functions = LLVM.AddFunction(Module, func_name, ret_type);
+        LLVMBasicBlockRef entry = LLVM.AppendBasicBlock((LLVMValueRef)Functions, "entry");
         this.Builder = LLVM.CreateBuilder();
         LLVM.PositionBuilderAtEnd(Builder, entry);
-        Ast = new FunctionAST("main", MainAst, main);
         
-        FunctionBodyListener listener = new FunctionBodyListener(this.Builder, this.Ast, this.Module);
+        
+        var ptrArg = LLVM.GetNamedFunction(Module, func_name);
+        Ast = new FunctionAST(func_name, MainAst, Functions);
+        
+        List<string> args = new List<string>();
+        foreach (var arg in context.arguments().arg())
+        {
+            args.Add(arg.ID().GetText());
+        }
+        
+        var ptrArgParams = ptrArg.GetParams();
+
+        foreach (var i in Enumerable.Range(0,ptrArgParams.Length))
+        {
+            Ast.AddVariable(args[i],ptrArgParams[i]);
+        }
+
+    }
+    
+    public override void EnterFunctionBody(arctParser.FunctionBodyContext context)
+    {
+        FunctionBodyListener listener = new FunctionBodyListener(this.Builder, Ast, this.Module);
         ParseTreeWalker.Default.Walk(listener, context);
         
     }
 
     public override void ExitFunctionBody(arctParser.FunctionBodyContext context)
     {
-        LLVMValueRef tmp = LLVM.BuildAdd(Builder, LLVM.GetParam(main, 0), LLVM.GetParam(main, 1), "tmp");
-        LLVM.BuildRet(Builder, tmp);
-        LLVM.SetLinkage(main, LLVMLinkage.LLVMExternalLinkage);
-        LLVM.SetDLLStorageClass(main, LLVMDLLStorageClass.LLVMDLLExportStorageClass);
+        // LLVM.SetLinkage(main, LLVMLinkage.LLVMExternalLinkage);
+        // LLVM.SetDLLStorageClass(main, LLVMDLLStorageClass.LLVMDLLExportStorageClass);
     }
 }
 
@@ -142,13 +162,44 @@ public class StatementListener : arctBaseListener
     public LLVMModuleRef Module { get; set; }
     public FunctionAST Ast;
     public LLVMBuilderRef Builder;
-    public LLVMValueRef Conditions;
+    public LLVMValueRef? Conditions;
 
     public StatementListener(LLVMBuilderRef builder, FunctionAST ast, LLVMModuleRef module)
     {
         Builder = builder;
         Ast = ast;
         Module = module;
+        Conditions = null;
+    }
+
+   
+    public override void EnterMoveValueVariable(arctParser.MoveValueVariableContext context)
+    {
+        string name = context.ID().GetText();
+        ExpressionListener listener = new ExpressionListener(this.Builder,this.Ast);
+        ParseTreeWalker.Default.Walk(listener, context);
+        
+        LLVMValueRef value = listener.stack.Pop();
+        var ptrValue = this.Ast.GetVariable(name);
+        LLVM.BuildStore(this.Builder, value, ptrValue);
+        this.Ast.AddVariable(name,ptrValue);
+
+    }
+
+    public override void EnterReturnStatement(arctParser.ReturnStatementContext context)
+    {
+        ExpressionListener listener = new ExpressionListener(this.Builder,this.Ast);
+        ParseTreeWalker.Default.Walk(listener, context);
+
+        if (Conditions is not null)
+        {
+            Console.WriteLine("PIZDA");
+        }
+        else
+        {
+            LLVM.BuildRet(Builder,listener.stack.Pop());
+        }
+        
     }
 
     public override void EnterAssignmentStatement(arctParser.AssignmentStatementContext context)
@@ -170,6 +221,7 @@ public class StatementListener : arctBaseListener
 
 public class ExpressionListener : arctBaseListener
 
+
 {
     public Stack<LLVMValueRef> stack = new Stack<LLVMValueRef>();
     public FunctionAST Ast;
@@ -180,6 +232,25 @@ public class ExpressionListener : arctBaseListener
         Builder = builder;
         Ast = ast;
     }
+
+    public override void ExitExpressionFunctionCall(arctParser.ExpressionFunctionCallContext context)
+    {
+        var call_function_name = Ast.MainAST.get_function(context.functionCall().ID().GetText());
+        var call_function = call_function_name.Function;
+        
+        var parametrs = new List<LLVMValueRef>();
+
+        foreach (var VARIABLE in context.functionCall().@params().param())
+        {
+            parametrs.Add(stack.Pop());
+        }
+
+        parametrs.Reverse();
+        LLVMValueRef[] array_param = parametrs.ToArray();
+        stack.Push(LLVM.BuildCall(Builder,(LLVMValueRef)call_function,array_param,context.functionCall().ID().GetText()+"_temp"));
+
+    }
+
     public override void ExitExpressionMul(arctParser.ExpressionMulContext context)
     {
         var right = stack.Pop();
@@ -257,7 +328,7 @@ public class ExpressionListener : arctBaseListener
                 result = LLVM.BuildLoad(this.Builder, pointer, context.GetText());
             }
             else
-            {
+            { 
                 result = pointer;
             }
             

@@ -108,7 +108,7 @@ namespace ArctCompiler
                             LLVMCodeGenFileType.LLVMObjectFile, out error);
                     }
                 }
-
+                
                 Process process = new Process();
                 process.StartInfo.FileName = "cmd.exe";
                 process.StartInfo.Arguments = "/c " + "clang test.o -o hello.exe ";
@@ -119,7 +119,7 @@ namespace ArctCompiler
                 process.Start();
                 string output = process.StandardOutput.ReadToEnd();
                 process.WaitForExit();
-
+                
                 // Write the output to the console
                 process.StartInfo.FileName = "cmd.exe";
                 process.StartInfo.Arguments = "/c " + "hello";
