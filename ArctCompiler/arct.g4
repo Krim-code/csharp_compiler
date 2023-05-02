@@ -32,7 +32,7 @@ convert_type: '<<' type '>>' LPAREN expression RPAREN;
 
 moveValueVariable:ID EQ expression END_STATE;
 
-printStatement :'print' LPAREN expression RPAREN END_STATE;
+printStatement :'print' LPAREN (STRING|atom) RPAREN END_STATE;
 
 ifStatement: 'if' LPAREN equation RPAREN LBRACE (statement)* RBRACE;
 

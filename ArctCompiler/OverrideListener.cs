@@ -2,6 +2,7 @@
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using LLVMSharp;
+using Microsoft.VisualBasic.CompilerServices;
 using Module = System.Reflection.Module;
 
 namespace ArctCompiler;
@@ -9,6 +10,8 @@ namespace ArctCompiler;
 public class MainAST
 {
     private static Dictionary<string, FunctionAST> functionList = new Dictionary<string, FunctionAST>();
+    
+    
 
     public void Add_Function(string name,FunctionAST pointer)
     {
@@ -172,7 +175,70 @@ public class StatementListener : arctBaseListener
         Conditions = null;
     }
 
-   
+    public override void EnterPrintStatement(arctParser.PrintStatementContext context)
+    {
+        LLVMValueRef[] formatString = default;
+        LLVMValueRef text = default;
+        LLVMValueRef frm_str = default;
+        
+        
+        var getPuts = LLVM.GetNamedFunction(Module,"printf");
+        if (getPuts.ToString() == "Printing <null> Value")
+        {
+            LLVMTypeRef retType = LLVM.FunctionType(LLVMTypeRef.Int32Type(), new LLVMTypeRef[] {LLVMTypeRef.PointerType(LLVMTypeRef.Int8Type(), 0),  }, true);
+            var puts = LLVM.AddFunction(Module,"printf",retType);
+            getPuts = LLVM.GetNamedFunction(Module,"printf");
+        }
+
+        if (context.STRING() is { } str)
+        {
+            frm_str = LLVM.BuildGlobalStringPtr(Builder,"%s\n","fmp");
+            text = LLVM.BuildGlobalStringPtr(Builder,str.GetText().Substring(1, str.GetText().Length - 2),"fmp");
+        }
+        else if (context.atom().INT() is { } intStr)
+        {
+            frm_str = LLVM.BuildGlobalStringPtr(Builder,"%s\n","fmp");
+            text = LLVM.BuildGlobalStringPtr(Builder,intStr.GetText(),"fmp");
+        }
+        else if (context.atom().DECIMAL() is { } decStr)
+        {
+            frm_str = LLVM.BuildGlobalStringPtr(Builder,"%s\n","fmp");
+            text = LLVM.BuildGlobalStringPtr(Builder,decStr.GetText(),"fmp");
+            
+        }
+        else if (context.atom().ID() is { } id)
+        {
+            var pointer = Ast.GetVariable(context.atom().ID().GetText());
+            if (pointer.IsAArgument().ToString() == "Printing <null> Value")
+            {
+                text = LLVM.BuildLoad(this.Builder, pointer, "print_"+context.atom().ID().GetText());
+            }
+            else
+            { 
+                text = pointer;
+            }
+            if (pointer.TypeOf().ToString() == "double*" || pointer.TypeOf().ToString() == "double")
+            {
+                frm_str = LLVM.BuildGlobalStringPtr(Builder,"%f\n","fmp");
+            }
+            else
+            {
+                frm_str = LLVM.BuildGlobalStringPtr(Builder,"%i\n","fmp");
+              
+            }
+            
+        }
+        var putsArgs = new LLVMValueRef[] {frm_str, text };
+        LLVM.BuildCall(Builder, getPuts, putsArgs, "print_tmp");
+        
+      
+
+
+        
+      
+
+    }
+
     public override void EnterMoveValueVariable(arctParser.MoveValueVariableContext context)
     {
         string name = context.ID().GetText();
@@ -319,7 +385,7 @@ public class ExpressionListener : arctBaseListener
             result = LLVM.ConstInt(LLVM.Int32Type(), (ulong)int.Parse(i.GetText()), false);
         }
         else if (context.DECIMAL() is { } d)
-            result = LLVM.ConstReal(LLVM.DoubleType(), (ulong)double.Parse(d.GetText()));
+            result = LLVM.ConstReal(LLVM.DoubleType(), double.Parse(d.GetText()));
         else if (context.ID() is { } id)
         {
             var pointer = Ast.GetVariable(context.GetText());
