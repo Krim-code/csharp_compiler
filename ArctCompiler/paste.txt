@@ -1,19 +1,16 @@
 ﻿int test(int a,int b){
     int c = b;
     int bk = <<int>>(1*5);
-    print(a);
     return bk;
 }
 int main() {
-    int x = 2;
-    double y = 5.3-0.1;
-    int z = test(2,4);
-    print(y);
-    print(x);
-    print("Hello Pidr");
-    
-    return 0;
-    
+    int a = 4;
+   if(a != 3) {
+     
+       print(a);
+   }
+   
+    return 0;  
 }
 
 

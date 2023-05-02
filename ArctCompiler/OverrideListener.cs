@@ -124,7 +124,7 @@ public class FunctionListener : arctBaseListener
     
     public override void EnterFunctionBody(arctParser.FunctionBodyContext context)
     {
-        FunctionBodyListener listener = new FunctionBodyListener(this.Builder, Ast, this.Module);
+        FunctionBodyListener listener = new FunctionBodyListener(this.Builder, Ast, this.Module, this.Functions);
         ParseTreeWalker.Default.Walk(listener, context);
         
     }
@@ -141,19 +141,21 @@ public class FunctionBodyListener : arctBaseListener
     public LLVMModuleRef Module { get; set; }
     public FunctionAST Ast;
     public LLVMBuilderRef Builder;
+    public LLVMValueRef? Functions;
     
-    public FunctionBodyListener(LLVMBuilderRef builder,FunctionAST ast, LLVMModuleRef module)
+    public FunctionBodyListener(LLVMBuilderRef builder,FunctionAST ast, LLVMModuleRef module,LLVMValueRef? functions)
     {
         Builder = builder;
         Ast = ast;
         Module = module;
+        Functions = functions;
     }
 
     public override void EnterFunctionBody(arctParser.FunctionBodyContext context)
     {
         foreach (var stm in context.children)
         {
-            StatementListener listener = new StatementListener(this.Builder, this.Ast, this.Module);
+            StatementListener listener = new StatementListener(this.Builder, this.Ast, this.Module,Functions);
             ParseTreeWalker.Default.Walk(listener, stm);
         }
        
@@ -166,14 +168,64 @@ public class StatementListener : arctBaseListener
     public FunctionAST Ast;
     public LLVMBuilderRef Builder;
     public LLVMValueRef? Conditions;
+    public LLVMValueRef? Functions;
 
-    public StatementListener(LLVMBuilderRef builder, FunctionAST ast, LLVMModuleRef module)
+    public StatementListener(LLVMBuilderRef builder, FunctionAST ast, LLVMModuleRef module,LLVMValueRef? functions)
     {
         Builder = builder;
         Ast = ast;
         Module = module;
+        Functions = functions;
         Conditions = null;
     }
+
+    public override void EnterIfStatement(arctParser.IfStatementContext context)
+    {
+        ExpressionListener listener = new ExpressionListener(this.Builder,this.Ast);
+        ParseTreeWalker.Default.Walk(listener, context.equation().expression(0));
+        var left = listener.stack.Pop();
+        
+        listener = new ExpressionListener(this.Builder,this.Ast);
+        ParseTreeWalker.Default.Walk(listener, context.equation().expression(1));
+        var right = listener.stack.Pop();
+        
+        string oper = context.equation().op.GetText();
+        LLVMIntPredicate PredicateCmp = default;
+        if (oper == ">")
+        {
+            PredicateCmp = LLVMIntPredicate.LLVMIntSGT;
+        }
+        else if (oper == "<")
+        { 
+            PredicateCmp = LLVMIntPredicate.LLVMIntSLT;
+        }
+        else if (oper == "==")
+        {
+           PredicateCmp = LLVMIntPredicate.LLVMIntEQ;
+        }
+        else if (oper == "!=")
+        { 
+            PredicateCmp = LLVMIntPredicate.LLVMIntNE;
+        }
+
+        Conditions = LLVM.BuildICmp(Builder, PredicateCmp, left, right, "icmp_check");
+        var ifTrue = LLVM.AppendBasicBlock((LLVMValueRef)this.Functions, "ifTrue");
+        var ifFalse = LLVM.AppendBasicBlock((LLVMValueRef)this.Functions, "ifFalse");
+        var exit = LLVM.AppendBasicBlock((LLVMValueRef)this.Functions, "exit");
+        LLVM.BuildCondBr(Builder, (LLVMValueRef)Conditions, ifTrue,ifFalse);
+        LLVM.PositionBuilderAtEnd(Builder, ifTrue);
+    }
+
+    public override void ExitIfStatement(arctParser.IfStatementContext context)
+    {
+        var exit = LLVM.GetLastBasicBlock((LLVMValueRef)Functions);
+        var ifFalse = LLVM.GetPreviousBasicBlock(exit);
+        LLVM.BuildBr(Builder, ifFalse);
+        LLVM.PositionBuilderAtEnd(Builder, ifFalse);
+        LLVM.BuildBr(Builder, exit);
+        LLVM.PositionBuilderAtEnd(Builder, exit);
+    }
+
 
     public override void EnterPrintStatement(arctParser.PrintStatementContext context)
     {
@@ -241,15 +293,17 @@ public class StatementListener : arctBaseListener
 
     public override void EnterMoveValueVariable(arctParser.MoveValueVariableContext context)
     {
-        string name = context.ID().GetText();
-        ExpressionListener listener = new ExpressionListener(this.Builder,this.Ast);
-        ParseTreeWalker.Default.Walk(listener, context);
         
-        LLVMValueRef value = listener.stack.Pop();
-        var ptrValue = this.Ast.GetVariable(name);
-        LLVM.BuildStore(this.Builder, value, ptrValue);
-        this.Ast.AddVariable(name,ptrValue);
-
+            string name = context.ID().GetText();
+            ExpressionListener listener = new ExpressionListener(this.Builder,this.Ast);
+            ParseTreeWalker.Default.Walk(listener, context);
+        
+            LLVMValueRef value = listener.stack.Pop();
+            var ptrValue = this.Ast.GetVariable(name);
+            LLVM.BuildStore(this.Builder, value, ptrValue);
+            this.Ast.AddVariable(name,ptrValue);
+            
+       
     }
 
     public override void EnterReturnStatement(arctParser.ReturnStatementContext context)
@@ -257,14 +311,9 @@ public class StatementListener : arctBaseListener
         ExpressionListener listener = new ExpressionListener(this.Builder,this.Ast);
         ParseTreeWalker.Default.Walk(listener, context);
 
-        if (Conditions is not null)
-        {
-            Console.WriteLine("PIZDA");
-        }
-        else
-        {
-            LLVM.BuildRet(Builder,listener.stack.Pop());
-        }
+      
+        LLVM.BuildRet(Builder,listener.stack.Pop());
+        
         
     }
 
