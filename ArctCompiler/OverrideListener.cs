@@ -60,6 +60,7 @@ public class OverrideListener : arctBaseListener
     {
         Module = LLVM.ModuleCreateWithName("Try");
         AST = new MainAST();
+        
       
     }
     
@@ -169,6 +170,8 @@ public class StatementListener : arctBaseListener
     public LLVMBuilderRef Builder;
     public LLVMValueRef? Conditions;
     public LLVMValueRef? Functions;
+    public LLVMBasicBlockRef WhileBodyBlock; 
+    public LLVMBasicBlockRef WhileAfterBlock; 
 
     public StatementListener(LLVMBuilderRef builder, FunctionAST ast, LLVMModuleRef module,LLVMValueRef? functions)
     {
@@ -177,6 +180,80 @@ public class StatementListener : arctBaseListener
         Module = module;
         Functions = functions;
         Conditions = null;
+    }
+
+    public override void EnterWhileStatement(arctParser.WhileStatementContext context)
+    {
+        this.WhileBodyBlock = LLVM.AppendBasicBlock((LLVMValueRef)Functions, "while_body");
+        this.WhileAfterBlock = LLVM.AppendBasicBlock((LLVMValueRef)Functions, "while_after");
+        
+        ExpressionListener listener = new ExpressionListener(this.Builder,this.Ast);
+        ParseTreeWalker.Default.Walk(listener, context.equation().expression(0));
+        var left = listener.stack.Pop();
+        
+        listener = new ExpressionListener(this.Builder,this.Ast);
+        ParseTreeWalker.Default.Walk(listener, context.equation().expression(1));
+        var right = listener.stack.Pop();
+        string oper = context.equation().op.GetText();
+        LLVMIntPredicate PredicateCmp = default;
+        if (oper == ">")
+        {
+            PredicateCmp = LLVMIntPredicate.LLVMIntSGT;
+        }
+        else if (oper == "<")
+        { 
+            PredicateCmp = LLVMIntPredicate.LLVMIntSLT;
+        }
+        else if (oper == "==")
+        {
+            PredicateCmp = LLVMIntPredicate.LLVMIntEQ;
+        }
+        else if (oper == "!=")
+        { 
+            PredicateCmp = LLVMIntPredicate.LLVMIntNE;
+        }
+
+       
+        var CondHead = LLVM.BuildICmp(Builder, PredicateCmp, left, right, "icmp_check");
+        LLVM.BuildCondBr(Builder, CondHead, WhileBodyBlock, WhileAfterBlock);
+        LLVM.PositionBuilderAtEnd(Builder,WhileBodyBlock);
+        
+
+    }
+
+    public override void ExitWhileStatement(arctParser.WhileStatementContext context)
+    {
+        ExpressionListener listener = new ExpressionListener(this.Builder,this.Ast);
+        ParseTreeWalker.Default.Walk(listener, context.equation().expression(0));
+        var left = listener.stack.Pop();
+        
+        listener = new ExpressionListener(this.Builder,this.Ast);
+        ParseTreeWalker.Default.Walk(listener, context.equation().expression(1));
+        var right = listener.stack.Pop();
+        string oper = context.equation().op.GetText();
+        LLVMIntPredicate PredicateCmp = default;
+        if (oper == ">")
+        {
+            PredicateCmp = LLVMIntPredicate.LLVMIntSGT;
+        }
+        else if (oper == "<")
+        { 
+            PredicateCmp = LLVMIntPredicate.LLVMIntSLT;
+        }
+        else if (oper == "==")
+        {
+            PredicateCmp = LLVMIntPredicate.LLVMIntEQ;
+        }
+        else if (oper == "!=")
+        { 
+            PredicateCmp = LLVMIntPredicate.LLVMIntNE;
+        }
+
+       
+        var CondHead = LLVM.BuildICmp(Builder, PredicateCmp, left, right, "icmp_check");
+        LLVM.BuildCondBr(Builder, CondHead, WhileBodyBlock, WhileAfterBlock);
+        LLVM.BuildBr(Builder, WhileAfterBlock);
+        LLVM.PositionBuilderAtEnd(Builder,WhileAfterBlock);
     }
 
     public override void EnterIfStatement(arctParser.IfStatementContext context)

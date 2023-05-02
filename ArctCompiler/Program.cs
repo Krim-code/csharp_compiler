@@ -32,14 +32,52 @@ namespace ArctCompiler
                     Console.WriteLine($"Error: {error}");
                 }
 
+                LLVM.DumpModule(mod);
+                
+                // LLVMPassManagerRef passManager = LLVM.CreateFunctionPassManagerForModule(mod);
+                // LLVM.AddPromoteMemoryToRegisterPass(passManager);
+                // LLVM.AddDeadStoreEliminationPass(passManager);
+                // LLVM.InitializeFunctionPassManager(passManager);
+                // LLVMValueRef? function = LLVM.GetFirstFunction(mod);
+                // while (function != null)
+                // {
+                //     LLVM.RunFunctionPassManager(passManager,(LLVMValueRef) function);
+                //     function = LLVM.GetNextFunction((LLVMValueRef)function);
+                // }
+                // LLVM.FinalizeFunctionPassManager(passManager);
+                // LLVM.DisposePassManager(passManager);
+                // LLVM.DisposeModule(mod);
+                // LLVM.AddConstantMergePass(modPassManager);
+                // LLVM.AddDeadArgEliminationPass(modPassManager);
+                // // LLVM.AddFunctionAttrsPass(modPassManager);
+                // // LLVM.AddFunctionInliningPass(modPassManager);
+                // LLVM.AddGlobalDCEPass(modPassManager);
+                // LLVM.AddGlobalOptimizerPass(modPassManager);
+                // LLVM.AddIPSCCPPass(modPassManager);
+                // LLVM.AddDeadStoreEliminationPass(modPassManager);
+                // LLVM.AddCFGSimplificationPass(modPassManager);
+                // LLVM.AddGVNPass(modPassManager);
+                // LLVM.AddInstructionCombiningPass(modPassManager);
+                // LLVM.AddLICMPass(modPassManager);
+                // LLVM.AddSCCPPass(modPassManager);
+                // LLVM.AddTypeBasedAliasAnalysisPass(modPassManager);
+                // LLVM.AddBasicAliasAnalysisPass(modPassManager);
+                // LLVM.PassManagerBuilderPopulateFunctionPassManager(passManagerBuilder,modPassManager);
+                // LLVM.RunPassManager(modPassManager, mod);
+                // LLVM.DisposePassManager(modPassManager);
+                // LLVM.DisposeModule(mod);
+
+                // LLVM.DumpModule(mod);
+
+
                 LLVM.InitializeX86TargetMC();
                 LLVM.InitializeX86Target();
                 LLVM.InitializeX86TargetInfo();
                 LLVM.InitializeX86AsmParser();
                 LLVM.InitializeX86AsmPrinter();
 
-              
-                LLVM.DumpModule(mod);
+                
+               
                 if (LLVM.GetTargetFromTriple("x86_64-pc-win32", out var target, out error) == Success)
                 {
                     var targetMachine = LLVM.CreateTargetMachine(target, "x86_64-pc-windows-msvc", "generic", "",
