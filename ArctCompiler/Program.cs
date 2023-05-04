@@ -13,6 +13,12 @@ namespace ArctCompiler
             public unsafe Arct()
             {
                 
+                LLVM.InitializeX86TargetMC();
+                LLVM.InitializeX86Target();
+                LLVM.InitializeX86TargetInfo();
+                LLVM.InitializeX86AsmParser();
+                LLVM.InitializeX86AsmPrinter();
+
                 String input = File.ReadAllText(@"C:\Users\Redmi\Documents\Programming\C#\CourseCompiler\ArctCompiler\paste.txt");
                 ICharStream stream = CharStreams.fromString(input);
                 ITokenSource lexer = new arctLexer(stream);
@@ -26,27 +32,27 @@ namespace ArctCompiler
                 LLVMModuleRef mod = printer.Module;
            
                 LLVMBool Success = new LLVMBool(0);
-                
-                if (LLVM.VerifyModule(mod, LLVMVerifierFailureAction.LLVMPrintMessageAction, out var error) != Success)
-                {
-                    Console.WriteLine($"Error: {error}");
-                }
-
-                LLVM.DumpModule(mod);
-                
+               
+                //
                 // LLVMPassManagerRef passManager = LLVM.CreateFunctionPassManagerForModule(mod);
                 // LLVM.AddPromoteMemoryToRegisterPass(passManager);
                 // LLVM.AddDeadStoreEliminationPass(passManager);
                 // LLVM.InitializeFunctionPassManager(passManager);
                 // LLVMValueRef? function = LLVM.GetFirstFunction(mod);
-                // while (function != null)
+                // while (function.ToString() != "Printing <null> Value")
                 // {
+                //    
                 //     LLVM.RunFunctionPassManager(passManager,(LLVMValueRef) function);
                 //     function = LLVM.GetNextFunction((LLVMValueRef)function);
                 // }
                 // LLVM.FinalizeFunctionPassManager(passManager);
                 // LLVM.DisposePassManager(passManager);
-                // LLVM.DisposeModule(mod);
+                //
+                //
+               
+               
+                
+              
                 // LLVM.AddConstantMergePass(modPassManager);
                 // LLVM.AddDeadArgEliminationPass(modPassManager);
                 // // LLVM.AddFunctionAttrsPass(modPassManager);
@@ -70,13 +76,19 @@ namespace ArctCompiler
                 // LLVM.DumpModule(mod);
 
 
-                LLVM.InitializeX86TargetMC();
-                LLVM.InitializeX86Target();
-                LLVM.InitializeX86TargetInfo();
-                LLVM.InitializeX86AsmParser();
-                LLVM.InitializeX86AsmPrinter();
-
                 
+               // var passManagerBuilder = LLVM.PassManagerBuilderCreate();
+               // LLVM.PassManagerBuilderSetOptLevel(passManagerBuilder, 2);
+               // var passManager = LLVM.CreatePassManager();
+               // LLVM.PassManagerBuilderPopulateModulePassManager(passManagerBuilder, passManager);
+               // LLVM.PassManagerBuilderDispose(passManagerBuilder);
+               // LLVM.RunPassManager(passManager, mod);
+                LLVM.DumpModule(mod);
+               if (LLVM.VerifyModule(mod, LLVMVerifierFailureAction.LLVMPrintMessageAction, out var error) != Success)
+               {
+                   Console.WriteLine($"Error: {error}");
+               }
+
                
                 if (LLVM.GetTargetFromTriple("x86_64-pc-win32", out var target, out error) == Success)
                 {
@@ -94,6 +106,7 @@ namespace ArctCompiler
                             LLVMCodeGenFileType.LLVMObjectFile, out error);
                     }
                 }
+                // LLVM.DisposePassManager(passManager);
                 Process process = new Process();
                 process.StartInfo.FileName = "cmd.exe";
                 process.StartInfo.Arguments = "/c " + "clang test.o -o hello.exe ";

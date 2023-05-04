@@ -172,6 +172,7 @@ public class StatementListener : arctBaseListener
     public LLVMValueRef? Functions;
     public LLVMBasicBlockRef WhileBodyBlock; 
     public LLVMBasicBlockRef WhileAfterBlock; 
+    public LLVMBasicBlockRef WhileCondHead { get; set; }
 
     public StatementListener(LLVMBuilderRef builder, FunctionAST ast, LLVMModuleRef module,LLVMValueRef? functions)
     {
@@ -184,8 +185,10 @@ public class StatementListener : arctBaseListener
 
     public override void EnterWhileStatement(arctParser.WhileStatementContext context)
     {
+        // this.WhileCondHead = LLVM.AppendBasicBlock((LLVMValueRef)Functions, "while_cond");
         this.WhileBodyBlock = LLVM.AppendBasicBlock((LLVMValueRef)Functions, "while_body");
         this.WhileAfterBlock = LLVM.AppendBasicBlock((LLVMValueRef)Functions, "while_after");
+        
         
         ExpressionListener listener = new ExpressionListener(this.Builder,this.Ast);
         ParseTreeWalker.Default.Walk(listener, context.equation().expression(0));
@@ -213,13 +216,17 @@ public class StatementListener : arctBaseListener
             PredicateCmp = LLVMIntPredicate.LLVMIntNE;
         }
 
-       
+        // LLVM.BuildBr(Builder, WhileBodyBlock);
+        // LLVM.BuildBr(Builder, WhileCondHead);
+        // LLVM.PositionBuilderAtEnd(Builder, WhileCondHead);
         var CondHead = LLVM.BuildICmp(Builder, PredicateCmp, left, right, "icmp_check");
         LLVM.BuildCondBr(Builder, CondHead, WhileBodyBlock, WhileAfterBlock);
         LLVM.PositionBuilderAtEnd(Builder,WhileBodyBlock);
         
 
     }
+
+   
 
     public override void ExitWhileStatement(arctParser.WhileStatementContext context)
     {
@@ -249,7 +256,7 @@ public class StatementListener : arctBaseListener
             PredicateCmp = LLVMIntPredicate.LLVMIntNE;
         }
 
-       
+        // LLVM.BuildBr(Builder, WhileCondHead);
         var CondHead = LLVM.BuildICmp(Builder, PredicateCmp, left, right, "icmp_check");
         LLVM.BuildCondBr(Builder, CondHead, WhileBodyBlock, WhileAfterBlock);
         LLVM.BuildBr(Builder, WhileAfterBlock);
