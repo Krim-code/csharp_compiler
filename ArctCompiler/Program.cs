@@ -121,12 +121,19 @@ namespace ArctCompiler
                 // Write the output to the console
                 process.StartInfo.FileName = "cmd.exe";
                 process.StartInfo.Arguments = "/c " + "hello";
+                // Start timing
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
                 
                 process.Start();
                 output = process.StandardOutput.ReadToEnd();
                 process.WaitForExit();
+                watch.Stop();
+                
                 Console.WriteLine("---------------------------------");
                 Console.WriteLine(output);
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine("Time taken: " + watch.ElapsedMilliseconds + " ms");
             }
         }
 
@@ -183,20 +190,25 @@ namespace ArctCompiler
                 Process process = new Process();
                 process.StartInfo.FileName = "cmd.exe";
                 process.StartInfo.Arguments = "/c " + "clang test.o -o hello.exe ";
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.CreateNoWindow = true;
+                // process.StartInfo.RedirectStandardOutput = true;
+                // process.StartInfo.UseShellExecute = true;
+                // process.StartInfo.CreateNoWindow = true;
                 // Start the process and read the output
                 process.Start();
-                string output = process.StandardOutput.ReadToEnd();
+               
                 process.WaitForExit();
                 
                 // Write the output to the console
                 process.StartInfo.FileName = "cmd.exe";
                 process.StartInfo.Arguments = "/c " + "hello";
-                
+                var s = process.StartTime.Millisecond;
                 process.Start();
-                Console.WriteLine(output);
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+                var e = process.ExitTime.Millisecond;
+                Console.WriteLine(output,e,s);
+                
+                
             }
         }
 

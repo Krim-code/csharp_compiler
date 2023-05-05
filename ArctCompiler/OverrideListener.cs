@@ -171,7 +171,8 @@ public class StatementListener : arctBaseListener
     public LLVMValueRef? Conditions;
     public LLVMValueRef? Functions;
     public LLVMBasicBlockRef WhileBodyBlock; 
-    public LLVMBasicBlockRef WhileAfterBlock; 
+    public LLVMBasicBlockRef WhileAfterBlock;
+    public LLVMBasicBlockRef IfCondHead;
     public LLVMBasicBlockRef WhileCondHead { get; set; }
 
     public StatementListener(LLVMBuilderRef builder, FunctionAST ast, LLVMModuleRef module,LLVMValueRef? functions)
@@ -294,10 +295,15 @@ public class StatementListener : arctBaseListener
             PredicateCmp = LLVMIntPredicate.LLVMIntNE;
         }
 
-        Conditions = LLVM.BuildICmp(Builder, PredicateCmp, left, right, "icmp_check");
+        
+        this.IfCondHead = LLVM.AppendBasicBlock((LLVMValueRef)Functions, "if_cond");
         var ifTrue = LLVM.AppendBasicBlock((LLVMValueRef)this.Functions, "ifTrue");
         var ifFalse = LLVM.AppendBasicBlock((LLVMValueRef)this.Functions, "ifFalse");
         var exit = LLVM.AppendBasicBlock((LLVMValueRef)this.Functions, "exit");
+        LLVM.BuildBr(Builder,this.IfCondHead);
+        LLVM.PositionBuilderAtEnd(Builder,this.IfCondHead);
+        
+        Conditions = LLVM.BuildICmp(Builder, PredicateCmp, left, right, "icmp_check_if");
         LLVM.BuildCondBr(Builder, (LLVMValueRef)Conditions, ifTrue,ifFalse);
         LLVM.PositionBuilderAtEnd(Builder, ifTrue);
     }
@@ -306,7 +312,7 @@ public class StatementListener : arctBaseListener
     {
         var exit = LLVM.GetLastBasicBlock((LLVMValueRef)Functions);
         var ifFalse = LLVM.GetPreviousBasicBlock(exit);
-        LLVM.BuildBr(Builder, ifFalse);
+        // LLVM.BuildBr(Builder, ifFalse);
         LLVM.PositionBuilderAtEnd(Builder, ifFalse);
         LLVM.BuildBr(Builder, exit);
         LLVM.PositionBuilderAtEnd(Builder, exit);
