@@ -33,48 +33,14 @@ namespace ArctCompiler
            
                 LLVMBool Success = new LLVMBool(0);
                
-                //
-                // LLVMPassManagerRef passManager = LLVM.CreateFunctionPassManagerForModule(mod);
-                // LLVM.AddPromoteMemoryToRegisterPass(passManager);
-                // LLVM.AddDeadStoreEliminationPass(passManager);
-                // LLVM.InitializeFunctionPassManager(passManager);
-                // LLVMValueRef? function = LLVM.GetFirstFunction(mod);
-                // while (function.ToString() != "Printing <null> Value")
-                // {
-                //    
-                //     LLVM.RunFunctionPassManager(passManager,(LLVMValueRef) function);
-                //     function = LLVM.GetNextFunction((LLVMValueRef)function);
-                // }
-                // LLVM.FinalizeFunctionPassManager(passManager);
-                // LLVM.DisposePassManager(passManager);
-                //
-                //
-               
-               
-                
-              
-                // LLVM.AddConstantMergePass(passManager);
-                // LLVM.AddDeadArgEliminationPass(passManager);
-                // // LLVM.AddFunctionAttrsPass(passManager);
-                // // LLVM.AddFunctionInliningPass(passManager);
-                // LLVM.AddGlobalDCEPass(passManager);
-                // LLVM.AddGlobalOptimizerPass(passManager);
-                // LLVM.AddIPSCCPPass(passManager);
-                // LLVM.AddDeadStoreEliminationPass(passManager);
-                // LLVM.AddCFGSimplificationPass(passManager);
-                // LLVM.AddGVNPass(passManager);
-                // LLVM.AddInstructionCombiningPass(passManager);
-               
-                // LLVM.PassManagerBuilderPopulateFunctionPassManager(passManagerBuilder,passManager);
-                // LLVM.RunPassManager(passManager, mod);
-                // LLVM.DisposePassManager(passManager);
-                // LLVM.DisposeModule(mod);
                 
                 LLVM.DumpModule(mod);
 
-
-                
-               var passManagerBuilder = LLVM.PassManagerBuilderCreate();
+                Console.WriteLine("Do you want to optimise Module (Y/N): ");
+                string check = Console.ReadLine();
+                if (check is "Y" or "y")
+                {
+                    var passManagerBuilder = LLVM.PassManagerBuilderCreate();
                LLVM.PassManagerBuilderSetOptLevel(passManagerBuilder, 2);
                var passManager = LLVM.CreatePassManager();
                LLVMValueRef? function = LLVM.GetFirstFunction(mod);
@@ -114,6 +80,9 @@ namespace ArctCompiler
                
                
                LLVM.DumpModule(mod);
+                }
+                
+               
                
                if (LLVM.VerifyModule(mod, LLVMVerifierFailureAction.LLVMPrintMessageAction, out var error) != Success)
                {
@@ -225,6 +194,7 @@ namespace ArctCompiler
                 // Write the output to the console
                 process.StartInfo.FileName = "cmd.exe";
                 process.StartInfo.Arguments = "/c " + "hello";
+                
                 process.Start();
                 Console.WriteLine(output);
             }
