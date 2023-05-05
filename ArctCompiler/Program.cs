@@ -53,37 +53,68 @@ namespace ArctCompiler
                
                 
               
-                // LLVM.AddConstantMergePass(modPassManager);
-                // LLVM.AddDeadArgEliminationPass(modPassManager);
-                // // LLVM.AddFunctionAttrsPass(modPassManager);
-                // // LLVM.AddFunctionInliningPass(modPassManager);
-                // LLVM.AddGlobalDCEPass(modPassManager);
-                // LLVM.AddGlobalOptimizerPass(modPassManager);
-                // LLVM.AddIPSCCPPass(modPassManager);
-                // LLVM.AddDeadStoreEliminationPass(modPassManager);
-                // LLVM.AddCFGSimplificationPass(modPassManager);
-                // LLVM.AddGVNPass(modPassManager);
-                // LLVM.AddInstructionCombiningPass(modPassManager);
-                // LLVM.AddLICMPass(modPassManager);
-                // LLVM.AddSCCPPass(modPassManager);
-                // LLVM.AddTypeBasedAliasAnalysisPass(modPassManager);
-                // LLVM.AddBasicAliasAnalysisPass(modPassManager);
-                // LLVM.PassManagerBuilderPopulateFunctionPassManager(passManagerBuilder,modPassManager);
-                // LLVM.RunPassManager(modPassManager, mod);
-                // LLVM.DisposePassManager(modPassManager);
+                // LLVM.AddConstantMergePass(passManager);
+                // LLVM.AddDeadArgEliminationPass(passManager);
+                // // LLVM.AddFunctionAttrsPass(passManager);
+                // // LLVM.AddFunctionInliningPass(passManager);
+                // LLVM.AddGlobalDCEPass(passManager);
+                // LLVM.AddGlobalOptimizerPass(passManager);
+                // LLVM.AddIPSCCPPass(passManager);
+                // LLVM.AddDeadStoreEliminationPass(passManager);
+                // LLVM.AddCFGSimplificationPass(passManager);
+                // LLVM.AddGVNPass(passManager);
+                // LLVM.AddInstructionCombiningPass(passManager);
+               
+                // LLVM.PassManagerBuilderPopulateFunctionPassManager(passManagerBuilder,passManager);
+                // LLVM.RunPassManager(passManager, mod);
+                // LLVM.DisposePassManager(passManager);
                 // LLVM.DisposeModule(mod);
-
-                // LLVM.DumpModule(mod);
+                
+                LLVM.DumpModule(mod);
 
 
                 
-               // var passManagerBuilder = LLVM.PassManagerBuilderCreate();
-               // LLVM.PassManagerBuilderSetOptLevel(passManagerBuilder, 2);
-               // var passManager = LLVM.CreatePassManager();
-               // LLVM.PassManagerBuilderPopulateModulePassManager(passManagerBuilder, passManager);
-               // LLVM.PassManagerBuilderDispose(passManagerBuilder);
-               // LLVM.RunPassManager(passManager, mod);
-                LLVM.DumpModule(mod);
+               var passManagerBuilder = LLVM.PassManagerBuilderCreate();
+               LLVM.PassManagerBuilderSetOptLevel(passManagerBuilder, 2);
+               var passManager = LLVM.CreatePassManager();
+               LLVMValueRef? function = LLVM.GetFirstFunction(mod);
+               while (function.ToString() != "Printing <null> Value")
+               {
+                  Console.WriteLine(function.ToString());
+                   LLVM.RunFunctionPassManager(passManager,(LLVMValueRef) function);
+                   function = LLVM.GetNextFunction((LLVMValueRef)function);
+               }
+               
+               LLVM.FinalizeFunctionPassManager(passManager);
+               
+               LLVM.AddPromoteMemoryToRegisterPass(passManager);
+               LLVM.AddDeadStoreEliminationPass(passManager);
+               LLVM.InitializeFunctionPassManager(passManager);
+               LLVM.AddConstantMergePass(passManager);
+               LLVM.AddDeadArgEliminationPass(passManager);
+               LLVM.AddFunctionAttrsPass(passManager);
+               LLVM.AddFunctionInliningPass(passManager);
+               LLVM.AddGlobalDCEPass(passManager);
+               LLVM.AddGlobalOptimizerPass(passManager);
+               LLVM.AddIPSCCPPass(passManager);
+               LLVM.AddDeadStoreEliminationPass(passManager);
+               LLVM.AddCFGSimplificationPass(passManager);
+               LLVM.AddGVNPass(passManager);
+               LLVM.AddInstructionCombiningPass(passManager);
+               LLVM.AddLICMPass(passManager);
+               LLVM.AddSCCPPass(passManager);
+               LLVM.AddTypeBasedAliasAnalysisPass(passManager);
+               LLVM.AddBasicAliasAnalysisPass(passManager);
+               
+               
+               LLVM.PassManagerBuilderPopulateModulePassManager(passManagerBuilder, passManager);
+               
+               LLVM.PassManagerBuilderDispose(passManagerBuilder);
+               LLVM.RunPassManager(passManager, mod);
+               
+               
+               LLVM.DumpModule(mod);
+               
                if (LLVM.VerifyModule(mod, LLVMVerifierFailureAction.LLVMPrintMessageAction, out var error) != Success)
                {
                    Console.WriteLine($"Error: {error}");

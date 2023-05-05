@@ -185,7 +185,7 @@ public class StatementListener : arctBaseListener
 
     public override void EnterWhileStatement(arctParser.WhileStatementContext context)
     {
-        // this.WhileCondHead = LLVM.AppendBasicBlock((LLVMValueRef)Functions, "while_cond");
+        this.WhileCondHead = LLVM.AppendBasicBlock((LLVMValueRef)Functions, "while_cond");
         this.WhileBodyBlock = LLVM.AppendBasicBlock((LLVMValueRef)Functions, "while_body");
         this.WhileAfterBlock = LLVM.AppendBasicBlock((LLVMValueRef)Functions, "while_after");
         
@@ -216,12 +216,14 @@ public class StatementListener : arctBaseListener
             PredicateCmp = LLVMIntPredicate.LLVMIntNE;
         }
 
-        // LLVM.BuildBr(Builder, WhileBodyBlock);
-        // LLVM.BuildBr(Builder, WhileCondHead);
-        // LLVM.PositionBuilderAtEnd(Builder, WhileCondHead);
+        LLVM.BuildBr(Builder, WhileCondHead);
+        LLVM.PositionBuilderAtEnd(Builder, WhileCondHead);
         var CondHead = LLVM.BuildICmp(Builder, PredicateCmp, left, right, "icmp_check");
         LLVM.BuildCondBr(Builder, CondHead, WhileBodyBlock, WhileAfterBlock);
+       
+
         LLVM.PositionBuilderAtEnd(Builder,WhileBodyBlock);
+        
         
 
     }
@@ -259,7 +261,7 @@ public class StatementListener : arctBaseListener
         // LLVM.BuildBr(Builder, WhileCondHead);
         var CondHead = LLVM.BuildICmp(Builder, PredicateCmp, left, right, "icmp_check");
         LLVM.BuildCondBr(Builder, CondHead, WhileBodyBlock, WhileAfterBlock);
-        LLVM.BuildBr(Builder, WhileAfterBlock);
+        // LLVM.BuildBr(Builder, WhileAfterBlock);
         LLVM.PositionBuilderAtEnd(Builder,WhileAfterBlock);
     }
 
