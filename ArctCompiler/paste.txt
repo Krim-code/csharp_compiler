@@ -6,7 +6,6 @@
     }
 int main() {
     int x = test(40);
-    print(x);
     return 0;
 }
 

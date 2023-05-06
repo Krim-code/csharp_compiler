@@ -130,10 +130,32 @@ namespace ArctCompiler
                 process.WaitForExit();
                 watch.Stop();
                 
-                Console.WriteLine("---------------------------------");
+                Console.WriteLine("--------------ArctCompiler------------------");
                 Console.WriteLine(output);
+                Console.WriteLine("-----------------C language----------------");
+                
+                Stopwatch watchC = new Stopwatch();
+                // Start timing
+                
+                watchC.Start();
+                process.StartInfo.FileName = "cmd.exe";
+                process.StartInfo.Arguments = "/c " + "clang test_c.c -o test_c.exe ";
+                process.Start();
+                process.WaitForExit();
+                
+                process.StartInfo.FileName = "cmd.exe";
+                process.StartInfo.Arguments = "/c " + "test_c";
+               
+                process.Start();
+                output = process.StandardOutput.ReadToEnd();
+                Console.WriteLine(output);
+                process.WaitForExit();
+                watchC.Stop();
+               
+                
                 Console.WriteLine("---------------------------------");
-                Console.WriteLine("Time taken: " + watch.ElapsedMilliseconds + " ms");
+                Console.WriteLine("ArctCompiler - Time taken: " + watch.ElapsedMilliseconds + " ms");
+                Console.WriteLine("C Language - Time taken: " + watchC.ElapsedMilliseconds + " ms");
             }
         }
 
